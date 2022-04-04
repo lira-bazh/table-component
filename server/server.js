@@ -45,29 +45,30 @@ server.get("/api/create-data", (req, res) => {
     encoding: "utf8",
   }).then(
     () => {
-      console.log("createNewData", true);
       res.json({ success: true });
     },
     (error) => {
-      console.log("createNewData", error);
       res.json({ success: false, error });
     }
   );
 });
 
-server.get("/api/data/:fromID/:toID", (req, res) => {
+server.get("/api/data/:fromID/:toID", async (req, res) => {
   const { fromID, toID } = req.params;
-  fs.readFile(fileData, { encoding: "utf8" }).then(
+
+  const resultData = await fs.readFile(fileData, { encoding: "utf8" }).then(
     (text) => {
-      const result = JSON.parse(text);
-      res.json({
-        portion: result.data.slice(fromID, toID),
-      });
+      return JSON.parse(text).data.slice(fromID, toID);
     },
-    (error) => {
-      res.json(`${error}`);
+    async () => {
+      const dataArray = createNewData(sizeArray);
+      await fs.writeFile(fileData, JSON.stringify({ data: dataArray }), {
+        encoding: "utf8",
+      });
+      return dataArray.slice(fromID, toID);
     }
   );
+  res.json({ portion: resultData });
 });
 
 server.get("/api/data/size", (req, res) => {
