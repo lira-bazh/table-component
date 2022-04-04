@@ -25,10 +25,12 @@ server.get("/", (req, res) => {
   res.send("Express server");
 });
 
-function createNewData() {
-  const size = 1500000;
+const sizeArray = 1000001;
+
+function createNewData(size) {
   const newData = new Array(size).fill(0).map(() => {
     return {
+      id: Math.floor(Math.random() * size * 100),
       title: generateSlug(3, { format: "title" }),
       year: 1920 + Math.floor(Math.random() * 100),
       producer: generateSlug(2, { format: "title", categories: "personality" }),
@@ -38,7 +40,7 @@ function createNewData() {
 }
 
 server.get("/api/create-data", (req, res) => {
-  const dataArray = createNewData();
+  const dataArray = createNewData(sizeArray);
   fs.writeFile(fileData, JSON.stringify({ data: dataArray }), {
     encoding: "utf8",
   }).then(
@@ -48,7 +50,7 @@ server.get("/api/create-data", (req, res) => {
     },
     (error) => {
       console.log("createNewData", error);
-      res.json({ success: error });
+      res.json({ success: false, error });
     }
   );
 });
@@ -57,12 +59,19 @@ server.get("/api/data/:fromID/:toID", (req, res) => {
   const { fromID, toID } = req.params;
   fs.readFile(fileData, { encoding: "utf8" }).then(
     (text) => {
-      res.json(JSON.parse(text).pizzas.slice(fromID, toID));
+      const result = JSON.parse(text);
+      res.json({
+        portion: result.data.slice(fromID, toID),
+      });
     },
     (error) => {
       res.json(`${error}`);
     }
   );
+});
+
+server.get("/api/data/size", (req, res) => {
+  res.json(sizeArray);
 });
 
 server.get("/*", (req, res) => {

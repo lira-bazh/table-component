@@ -1,0 +1,36 @@
+@import "../assets/styles/var";
+
+.settings {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+
+  input,
+  &-update {
+    background-color: transparent;
+    color: $text-color;
+    padding: 5px;
+    border: 1px solid $text-color;
+  }
+
+  &-search {
+    flex-grow: 1;
+
+    input {
+      width: 80%;
+    }
+  }
+
+  &-update {
+    margin-right: 10px;
+
+    &:hover {
+      background-color: $primary-color-40;
+    }
+
+    &:active {
+      background-color: $secondary-color;
+      color: $primary-color-80;
+    }
+  }
+}

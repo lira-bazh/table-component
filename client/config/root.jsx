@@ -1,16 +1,20 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import Main from "../components/main";
+import store from "../redux/index.js";
+import "./root.scss";
 
 const Root = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<div>This is React Router v6!</div>} />
-        <Route path="/test" element={<div>This is TEST!</div>} />
-        <Route path="*" element={<h3>404</h3>} />
-      </Routes>
+      <Provider store={store}>
+        <Routes>
+          <Route exact path="/" element={<Main />} />
+        </Routes>
+      </Provider>
     </BrowserRouter>
-  )
-}
+  );
+};
 
-export default Root
+export default Root;
