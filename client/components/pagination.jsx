@@ -11,64 +11,54 @@ const Pagination = () => {
 
   const amountPages = Math.ceil((sizeData - startNumData) / sizePortion);
 
-  const pages = new Array(amountPages).fill(0).map((item, index) => {
-    const start = sizePortion * index;
-    const end = Math.min(+start + +sizePortion, sizeData)
-    return {
-      start: start,
-      title: `${start + 1}-${end}`,
-    };
+  const getStartNum = (index) => index * sizePortion;
+  const getTitle = (index) => {
+    const start = getStartNum(index);
+    return `${start + 1}-${Math.min(+start + +sizePortion, sizeData)}`;
+  };
+  const getInfo = (index) => ({
+    start: getStartNum(index),
+    title: getTitle(index)
   });
 
-  let startButton = "";
-  if (curPortionStartNum - sizePortion > startNumData) {
-    startButton = (
-      <PaginationButton
-        info={
-          pages[
-            (+curPortionStartNum - +sizePortion) / sizePortion
-          ]
-        }
-      />
-    );
-  }
-  let currentButton = '';
-  if (
+  const showStartButton = curPortionStartNum - sizePortion > startNumData;
+  const showCurrentButton =
     curPortionStartNum > startNumData &&
-    curPortionStartNum < sizeData - sizePortion
-  ) {
-    currentButton = (
-      <PaginationButton info={pages[curPortionStartNum / sizePortion]} />
-    );
-  }
-  let nextButton = ''
-  if (curPortionStartNum + sizePortion < sizeData) {
-    nextButton = (
-      <PaginationButton
-        info={
-          pages[(+curPortionStartNum + +sizePortion) / sizePortion]
-        }
-      />
-    );
-  }
+    curPortionStartNum < sizeData - sizePortion;
+  const showNextButton = curPortionStartNum + 2*sizePortion < sizeData;
 
-  const startInterval = curPortionStartNum - startNumData > sizePortion? '...' : '';
-  const endInterval = sizeData - curPortionStartNum > sizePortion ? "..." : "";
+  const startButton = (
+    <PaginationButton
+      info={getInfo((+curPortionStartNum - +sizePortion) / sizePortion)}
+    />
+  )
+  const currentButton = (
+    <PaginationButton info={getInfo(curPortionStartNum / sizePortion)} />
+  );
+  const nextButton = (
+    <PaginationButton
+      info={getInfo((+curPortionStartNum + +sizePortion) / sizePortion)}
+    />
+  )
 
-  if (pages.length > 0) {
-    return (
-      <div className="pagination">
-        <PaginationButton info={pages[0]} />
-        {startInterval}
-        {startButton}
-        {currentButton}
-        {nextButton}
-        {endInterval}
-        <PaginationButton info={pages[pages.length - 1]} />
-      </div>
-    );
-  }
-  return <div className="pagination"></div>;
+  const startInterval = showStartButton ? "..." : null;
+  const endInterval = showNextButton ? "..." : null;
+
+  return (
+    <div className="pagination">
+      {amountPages > 0 && (
+        <>
+          <PaginationButton info={getInfo(0)} />
+          {startInterval}
+          {showStartButton && startButton}
+          {showCurrentButton && currentButton}
+          {showNextButton && nextButton}
+          {endInterval}
+          <PaginationButton info={getInfo(amountPages - 1)} />
+        </>
+      )}
+    </div>
+  );
 };
 
 Pagination.propTypes = {};

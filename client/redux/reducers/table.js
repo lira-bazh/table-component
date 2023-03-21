@@ -17,7 +17,7 @@ const initialState = {
   emptyBase: false,
   sortField: "title",
   sortAsc: true,
-  findID: [],
+  findID: []
 };
 
 export default (state = initialState, action) => {
@@ -27,38 +27,38 @@ export default (state = initialState, action) => {
         ...state,
         availableData: [...action.portion],
         curPortionStartNum: action.num,
-        emptyBase: action.portion.length < state.sizePortionToLoad,
+        emptyBase: action.portion.length < state.sizePortionToLoad
       };
     }
     case GET_DATA_SIZE: {
       return {
         ...state,
-        sizeData: action.size,
+        sizeData: action.size
       };
     }
     case CHANGE_SORT_FIELD: {
       if (state.sortField === action.sort) {
         return {
           ...state,
-          sortAsc: !state.sortAsc,
+          sortAsc: !state.sortAsc
         };
       }
       return {
         ...state,
         sortField: action.sort,
-        sortAsc: true,
+        sortAsc: true
       };
     }
     case CHANGE_SIZE_PORTION: {
       return {
         ...state,
-        sizePortionToLoad: action.num,
+        sizePortionToLoad: action.num
       };
     }
     case SEARCH_TEXT: {
       return {
         ...state,
-        findID: action.id,
+        findID: action.id
       };
     }
     default:
@@ -75,7 +75,7 @@ export function uploadData(num, size) {
         store.availableData.length === 0 ||
         store.availableData.length !== size)
     ) {
-      const fullUrl = `${store.urlGetData}/${num}/${+num + +size}`;
+      const fullUrl = `${store.urlGetData}/${num}/${num + size}`;
       axios(fullUrl).then(({ data }) => {
         dispatch({ type: UPLOAD_DATA, portion: data.portion, num });
       });
@@ -88,7 +88,7 @@ export function getDataSize() {
     const store = getState().table;
     const fullUrl = `${store.urlGetData}/size`;
     axios(fullUrl).then(({ data }) => {
-      dispatch({ type: GET_DATA_SIZE, size: data });
+      dispatch({ type: GET_DATA_SIZE, size: data - 1 });
     });
   };
 }

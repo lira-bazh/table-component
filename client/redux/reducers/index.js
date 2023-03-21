@@ -1,9 +1,9 @@
-import { combineReducers } from "redux";
+import { combineReducers } from "@reduxjs/toolkit";
 import table from "./table.js";
 
 const createRootReducer = () =>
   combineReducers({
-    table,
+    table
   });
 
 export default createRootReducer;

@@ -5,8 +5,7 @@ import Main from "../components/main";
 import store from "../redux/index.js";
 import "./root.scss";
 
-const Root = () => {
-  return (
+const Root =  (
     <BrowserRouter>
       <Provider store={store}>
         <Routes>
@@ -15,6 +14,5 @@ const Root = () => {
       </Provider>
     </BrowserRouter>
   );
-};
 
 export default Root;

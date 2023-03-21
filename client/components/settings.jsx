@@ -38,8 +38,8 @@ const Settings = () => {
   };
 
   const changePortion = (event) => {
-    dispatch(changeSizePortion(event.target.value));
-    dispatch(uploadData(startNum, event.target.value));
+    dispatch(changeSizePortion(+event.target.value));
+    dispatch(uploadData(startNum, +event.target.value));
   };
 
   return (
