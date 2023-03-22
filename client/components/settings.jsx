@@ -4,7 +4,6 @@ import {
   uploadData,
   changeSizePortion,
   setFindArray,
-  updateData,
 } from "../redux/reducers/table";
 import "./settings.scss";
 
@@ -13,11 +12,6 @@ const Settings = () => {
   const dataBase = useSelector((s) => s.table.availableData);
   const sizePortion = useSelector((s) => s.table.sizePortionToLoad);
   const startNum = useSelector((s) => s.table.startNumData);
-
-  const clickUpdate = (event) => {
-    event.preventDefault()
-    dispatch(updateData(startNum, sizePortion));
-  }
 
   const searchText = (event) => {
     if (event.target.value !== "") {
@@ -44,9 +38,6 @@ const Settings = () => {
 
   return (
     <div className="settings">
-      <button className="settings-update" onClick={clickUpdate}>
-        Обновить данные
-      </button>
       <div className="settings-search">
         <input
           type="search"

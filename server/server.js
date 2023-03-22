@@ -1,9 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { resolve } from "path";
 import { promises as fs } from "fs";
-import { generateSlug } from "random-word-slugs";
 
 import { Html } from "../client/html.js";
 
@@ -25,55 +23,26 @@ server.get("/", (req, res) => {
   res.send("Express server");
 });
 
-const sizeArray = 100000;
-
-function createNewData(size) {
-  const newData = new Array(size).fill(0).map(() => {
-    return {
-      id: Math.floor(Math.random() * size * 100),
-      title: generateSlug(3, { format: "title" }),
-      year: 1920 + Math.floor(Math.random() * 100),
-      producer: generateSlug(2, { format: "title", categories: "personality" })
-    };
-  });
-  return newData;
-}
-
-server.get("/api/create-data", (req, res) => {
-  const dataArray = createNewData(sizeArray);
-  fs.writeFile(fileData, JSON.stringify({ data: dataArray }), {
-    encoding: "utf8"
-  }).then(
-    () => {
-      res.json({ success: true });
-    },
-    (error) => {
-      res.json({ success: false, error });
-    }
-  );
-});
-
 server.get("/api/data/:fromID/:toID", async (req, res) => {
   const { fromID, toID } = req.params;
 
-  const resultData = await fs.readFile(fileData, { encoding: "utf8" }).then(
-    (text) => {
+  const resultData = await fs
+    .readFile(fileData, { encoding: "utf8" })
+    .then((text) => {
       const data = JSON.parse(text).data;
       return data.slice(fromID, toID);
-    },
-    async () => {
-      const dataArray = createNewData(sizeArray);
-      await fs.writeFile(fileData, JSON.stringify({ data: dataArray }), {
-        encoding: "utf8"
-      });
-      return dataArray.slice(fromID, toID);
-    }
-  );
+    });
   res.json({ portion: resultData });
 });
 
-server.get("/api/data/size", (req, res) => {
-  res.json(sizeArray);
+server.get("/api/data/size", async (req, res) => {
+  const result = await fs
+    .readFile(fileData, { encoding: "utf8" })
+    .then((text) => {
+      const data = JSON.parse(text).data;
+      return data.length;
+    });
+  res.json(result);
 });
 
 server.get("/*", (req, res) => {

@@ -88,7 +88,7 @@ export function getDataSize() {
     const store = getState().table;
     const fullUrl = `${store.urlGetData}/size`;
     axios(fullUrl).then(({ data }) => {
-      dispatch({ type: GET_DATA_SIZE, size: data - 1 });
+      dispatch({ type: GET_DATA_SIZE, size: data });
     });
   };
 }
@@ -103,20 +103,4 @@ export function changeSizePortion(num) {
 
 export function setFindArray(array) {
   return { type: SEARCH_TEXT, id: array };
-}
-
-export function updateData(num, size) {
-  return (dispatch, getState) => {
-    console.log("Запущено обновление данных");
-    const store = getState().table;
-    axios(store.urlUpdData).then(({ data }) => {
-      if (data.success) {
-        console.log("Данные успешно обновлены");
-        const fullUrl = `${store.urlGetData}/${num}/${+num + +size}`;
-        axios(fullUrl).then(({ data }) => {
-          dispatch({ type: UPLOAD_DATA, portion: data.portion, num });
-        });
-      }
-    });
-  };
 }

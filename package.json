@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate",
+  "name": "table-component",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lira-lantan/boilerplate.git"
+    "url": "git+https://github.com/lira-bazh/table-component.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lira-lantan/boilerplate/issues"
+    "url": "https://github.com/lira-bazh/table-component/issues"
   },
-  "homepage": "https://github.com/lira-lantan/boilerplate#readme",
+  "homepage": "https://github.com/lira-bazh/table-component#readme",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
     "add": "^2.0.6",
@@ -32,7 +32,6 @@
     "cross-env": "^7.0.3",
     "express": "^4.18.2",
     "nodemon": "^2.0.21",
-    "random-word-slugs": "^0.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
